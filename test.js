@@ -158,6 +158,11 @@ test('All types of keys', t => {
 	t.is(map.size, 1);
 	t.true(map.delete([key]));
 	t.is(map.size, 0);
+
+	t.is(map.set([null], 'null').get([null]), 'null');
+	t.is(map.size, 1);
+	t.true(map.delete([null]));
+	t.is(map.size, 0);
 });
 
 test('Mixed types of keys', t => {
@@ -169,6 +174,15 @@ test('Mixed types of keys', t => {
 	t.is(map.get(['1', '1', true]), undefined);
 	t.is(map.get([1, '1', true, 1]), undefined);
 	t.is(map.get([1, 1, 1]), undefined);
+
+	map.set([false, null, undefined], 'falsy');
+	t.is(map.size, 2);
+	t.is(map.get([false, null, undefined]), 'falsy');
+	t.is(map.get([false, 'null', 'undefined']), undefined);
+	t.is(map.get(['null', 'null', undefined]), undefined);
+	t.is(map.get([false, 'null', undefined, false]), undefined);
+	t.is(map.get([false, false, false]), undefined);
+	t.is(map.get([undefined, undefined, undefined]), undefined);
 
 	map.set([undefined], 'undefined');
 	t.is(map.size, 3);

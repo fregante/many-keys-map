@@ -3,6 +3,7 @@ const getPrivateKey = Symbol('getPrivateKey');
 const publicKeys = Symbol('publicKeys');
 const objectHashes = Symbol('objectHashes');
 const symbolHashes = Symbol('symbolHashes');
+const nullKey = Symbol('null'); // WeakMap key for null
 
 let keyCounter = 0;
 
@@ -28,6 +29,10 @@ export default class MultiMap extends Map {
 
 	[createPrivateKey](keys) {
 		return JSON.stringify(keys.map(key => {
+			if (key === null) {
+				key = nullKey;
+			}
+
 			if (typeof key === 'object') {
 				if (this[objectHashes].has(key)) {
 					return this[objectHashes].get(key);
@@ -54,6 +59,10 @@ export default class MultiMap extends Map {
 
 	[getPrivateKey](keys) {
 		return JSON.stringify(keys.map(key => {
+			if (key === null) {
+				key = nullKey;
+			}
+
 			if (typeof key === 'object') {
 				if (this[objectHashes].has(key)) {
 					return this[objectHashes].get(key);
