@@ -1,4 +1,4 @@
-# multi-key-map [![Build Status](https://travis-ci.org/bfred-it/multi-key-map.svg?branch=master)](https://travis-ci.org/bfred-it/multi-key-map)
+# multi-key-map [![Build Status](https://api.travis-ci.com/bfred-it/multi-key-map.svg?branch=master)](https://travis-ci.com/bfred-it/multi-key-map)
 
 > A `Map` subclass with support for multiple keys for one entry.
 
