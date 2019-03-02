@@ -152,6 +152,12 @@ test('All types of keys', t => {
 	t.is(map.size, 1);
 	t.true(map.delete([key]));
 	t.is(map.size, 0);
+
+	key = Symbol('symbol');
+	t.is(map.set([key], 'symbol').get([key]), 'symbol');
+	t.is(map.size, 1);
+	t.true(map.delete([key]));
+	t.is(map.size, 0);
 });
 
 test('Mixed types of keys', t => {
@@ -169,4 +175,15 @@ test('Mixed types of keys', t => {
 	t.is(map.get([undefined]), 'undefined');
 	t.is(map.get(['undefined']), undefined);
 	t.is(map.get([,]), 'undefined'); // eslint-disable-line no-sparse-arrays,comma-spacing
+
+	const key1 = {};
+	const key2 = {};
+	const key3 = Symbol(3);
+	const key4 = Symbol(4);
+	map.set([key1, key2, key3, key4], 'references');
+	t.is(map.size, 4);
+	t.is(map.get([key1, key2, key3, key4]), 'references');
+	t.is(map.get([key2, key1, key3, key4]), undefined);
+	t.is(map.get([key1, key2, key4, key3]), undefined);
+	t.is(map.get([key1, key2, key3, Symbol(4)]), undefined);
 });

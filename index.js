@@ -2,6 +2,7 @@ const createPrivateKey = Symbol('createPrivateKey');
 const getPrivateKey = Symbol('getPrivateKey');
 const publicKeys = Symbol('publicKeys');
 const objectHashes = Symbol('objectHashes');
+const symbolHashes = Symbol('symbolHashes');
 
 let keyCounter = 0;
 
@@ -9,6 +10,7 @@ export default class MultiMap extends Map {
 	constructor(pairs) {
 		super();
 		this[objectHashes] = new WeakMap();
+		this[symbolHashes] = new Map(); // https://github.com/tc39/ecma262/issues/1194
 		this[publicKeys] = new Map();
 
 		if (pairs === null || pairs === undefined) {
@@ -36,6 +38,16 @@ export default class MultiMap extends Map {
 				return keyCounter;
 			}
 
+			if (typeof key === 'symbol') {
+				if (this[symbolHashes].has(key)) {
+					return this[symbolHashes].get(key);
+				}
+
+				keyCounter++;
+				this[symbolHashes].set(key, keyCounter);
+				return keyCounter;
+			}
+
 			return key;
 		}));
 	}
@@ -45,6 +57,15 @@ export default class MultiMap extends Map {
 			if (typeof key === 'object') {
 				if (this[objectHashes].has(key)) {
 					return this[objectHashes].get(key);
+				}
+
+				// Impossible key
+				return Math.random() + '.' + Math.random();
+			}
+
+			if (typeof key === 'symbol') {
+				if (this[symbolHashes].has(key)) {
+					return this[symbolHashes].get(key);
 				}
 
 				// Impossible key
