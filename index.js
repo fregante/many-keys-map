@@ -1,3 +1,5 @@
+'use strict';
+
 const createPrivateKey = Symbol('createPrivateKey');
 const getPrivateKey = Symbol('getPrivateKey');
 const publicKeys = Symbol('publicKeys');
@@ -7,7 +9,7 @@ const nullKey = Symbol('null'); // WeakMap key for null
 
 let keyCounter = 0;
 
-export default class MultiMap extends Map {
+module.exports = class MultiKeyMap extends Map {
 	constructor(pairs) {
 		super();
 		this[objectHashes] = new WeakMap();
@@ -128,4 +130,4 @@ export default class MultiMap extends Map {
 		const publicKey = this[publicKeys].get(privateKey);
 		return Boolean(publicKey && super.delete(publicKey) && this[publicKeys].delete(privateKey));
 	}
-}
+};

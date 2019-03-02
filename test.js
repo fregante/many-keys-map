@@ -1,5 +1,6 @@
 import test from 'ava';
-import MultiMap from '.';
+
+const MultiMap = require('.');
 
 test('Basics', t => {
 	const map = new MultiMap();
