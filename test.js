@@ -127,6 +127,16 @@ test('Iterators', t => {
 test('All types of keys', t => {
 	const map = new MultiMap();
 
+	t.is(map.set([], '').get([]), '');
+	t.is(map.size, 1);
+	t.true(map.delete([]));
+	t.is(map.size, 0);
+
+	t.is(map.set([''], '').get(['']), '');
+	t.is(map.size, 1);
+	t.true(map.delete(['']));
+	t.is(map.size, 0);
+
 	t.is(map.set([1], 'number').get([1]), 'number');
 	t.is(map.size, 1);
 	t.true(map.delete([1]));
@@ -140,6 +150,11 @@ test('All types of keys', t => {
 	t.is(map.set([undefined], 'undefined').get([undefined]), 'undefined');
 	t.is(map.size, 1);
 	t.true(map.delete([undefined]));
+	t.is(map.size, 0);
+
+	t.is(map.set([NaN], 'NaN').get([NaN]), 'NaN');
+	t.is(map.size, 1);
+	t.true(map.delete([NaN]));
 	t.is(map.size, 0);
 
 	let key = {};
