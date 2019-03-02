@@ -1,0 +1,25 @@
+{
+	"name": "multi-key-map",
+	"version": "0.0.0",
+	"description": "",
+	"license": "MIT",
+	"repository": "bfred-it/multi-key-map",
+	"author": "Federico Brigante <github@bfred.it> (bfred.it)",
+	"keywords": [],
+	"files": [
+		"index.js"
+	],
+	"scripts": {
+		"test": "xo && ava"
+	},
+	"ava": {
+		"require": [
+			"esm"
+		]
+	},
+	"devDependencies": {
+		"ava": "*",
+		"esm": "^3.2.9",
+		"xo": "^0.24.0"
+	}
+}

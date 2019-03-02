@@ -1,0 +1,11 @@
+node_modules
+.DS_Store
+Desktop.ini
+._*
+Thumbs.db
+*.tmp
+*.bak
+*.log
+*.lock
+logs
+package-lock.json
