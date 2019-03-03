@@ -1,5 +1,6 @@
 'use strict';
 
+const getInternalKeys = Symbol('getInternalKeys');
 const getPrivateKey = Symbol('getPrivateKey');
 const publicKeys = Symbol('publicKeys');
 const objectHashes = Symbol('objectHashes');
@@ -29,6 +30,20 @@ module.exports = class MultiKeyMap extends Map {
 		for (const [keys, value] of pairs) {
 			this.set(keys, value);
 		}
+	}
+
+	[getInternalKeys](keys, create = false) {
+		const privateKey = this[getPrivateKey](keys, create);
+
+		let publicKey;
+		if (this[publicKeys].has(privateKey)) {
+			publicKey = this[publicKeys].get(privateKey);
+		} else if (create) {
+			this[publicKeys].set(privateKey, keys);
+			publicKey = keys;
+		}
+
+		return {privateKey, publicKey};
 	}
 
 	[getPrivateKey](keys, create = false) {
@@ -63,16 +78,7 @@ module.exports = class MultiKeyMap extends Map {
 			throw new TypeError('The keys parameter must be an array');
 		}
 
-		const privateKey = this[getPrivateKey](keys, true);
-
-		let publicKey;
-		if (this[publicKeys].has(privateKey)) {
-			publicKey = this[publicKeys].get(privateKey);
-		} else {
-			this[publicKeys].set(privateKey, keys);
-			publicKey = keys;
-		}
-
+		const {publicKey} = this[getInternalKeys](keys, true);
 		return super.set(publicKey, value);
 	}
 
@@ -81,7 +87,8 @@ module.exports = class MultiKeyMap extends Map {
 			throw new TypeError('The keys parameter must be an array');
 		}
 
-		return super.get(this[publicKeys].get(this[getPrivateKey](keys)));
+		const {publicKey} = this[getInternalKeys](keys);
+		return super.get(publicKey);
 	}
 
 	has(keys) {
@@ -89,7 +96,8 @@ module.exports = class MultiKeyMap extends Map {
 			throw new TypeError('The keys parameter must be an array');
 		}
 
-		return super.has(this[publicKeys].get(this[getPrivateKey](keys)));
+		const {publicKey} = this[getInternalKeys](keys);
+		return super.has(publicKey);
 	}
 
 	delete(keys) {
@@ -97,8 +105,7 @@ module.exports = class MultiKeyMap extends Map {
 			throw new TypeError('The keys parameter must be an array');
 		}
 
-		const privateKey = this[getPrivateKey](keys);
-		const publicKey = this[publicKeys].get(privateKey);
+		const {publicKey, privateKey} = this[getInternalKeys](keys);
 		return Boolean(publicKey && super.delete(publicKey) && this[publicKeys].delete(privateKey));
 	}
 
