@@ -15,5 +15,10 @@
 	"devDependencies": {
 		"ava": "*",
 		"xo": "*"
+	},
+	"xo": {
+		"rules": {
+			"no-new": 0
+		}
 	}
 }

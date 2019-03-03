@@ -29,32 +29,6 @@ const MultiKeyMap = require('.');
 
 const isIterator = it => typeof it === 'object' && typeof it.next === 'function';
 
-const DESCRIPTORS = Boolean((() => {
-	try {
-		return (
-			Object.defineProperty({}, 'a', {
-				get() {
-					return 7;
-				}
-			}).a === 7
-		);
-	} catch (error) {
-		/* Empty */
-	}
-})());
-
-const GLOBAL = new Function('return this')();
-
-const NATIVE = GLOBAL.NATIVE || false;
-const {
-	getOwnPropertyDescriptor,
-	keys,
-	getOwnPropertyNames,
-	getOwnPropertySymbols,
-	freeze
-} = Object;
-const {ownKeys} = GLOBAL.Reflect || {};
-
 function createIterable(elements, methods) {
 	const iterable = {
 		called: false,
@@ -72,7 +46,7 @@ function createIterable(elements, methods) {
 				}
 			};
 			if (methods) {
-				for (const key in methods) {
+				for (const key of Object.keys(methods)) {
 					iterator[key] = methods[key];
 				}
 			}
@@ -82,28 +56,6 @@ function createIterable(elements, methods) {
 	};
 	return iterable;
 }
-
-const nativeSubclass = (() => {
-	try {
-		if (
-			new Function(`
-      'use strict';
-      class Subclass extends Object { /* empty */ };
-      return new Subclass() instanceof Subclass;
-    `)()
-		) {
-			return new Function(
-				'Parent',
-				`
-      'use strict';
-      return class extends Parent { /* empty */ };
-    `
-			);
-		}
-	} catch (error) {
-		/* Empty */
-	}
-})();
 
 test('MultiKeyMap', t => {
 	t.is(typeof MultiKeyMap, 'function');
@@ -122,7 +74,7 @@ test('MultiKeyMap', t => {
 		'Init from iterable'
 	);
 	t.is(
-		new MultiKeyMap([[freeze([{}]), 1], [[2], 3]]).size,
+		new MultiKeyMap([[Object.freeze([{}]), 1], [[2], 3]]).size,
 		2,
 		'Support frozen objects'
 	);
@@ -153,41 +105,35 @@ test('MultiKeyMap', t => {
 	t.true(done);
 	const object = {};
 	new MultiKeyMap().set([object], 1);
-	if (DESCRIPTORS) {
-		const results = [];
-		for (const key in object) {
-			results.push(key);
-		}
-
-		t.deepEqual(results, []);
-		t.deepEqual(keys(object), []);
+	const results = [];
+	for (const key of Object.keys(object)) {
+		results.push(key);
 	}
 
-	t.deepEqual(getOwnPropertyNames(object), []);
-	if (getOwnPropertySymbols) {
-		t.deepEqual(getOwnPropertySymbols(object), []);
+	t.deepEqual(results, []);
+	t.deepEqual(Object.keys(object), []);
+
+	t.deepEqual(Object.getOwnPropertyNames(object), []);
+	if (Object.getOwnPropertySymbols) {
+		t.deepEqual(Object.getOwnPropertySymbols(object), []);
 	}
 
-	if (ownKeys) {
-		t.deepEqual(ownKeys(object), []);
-	}
+	t.deepEqual(Reflect.ownKeys(object), []);
 
-	if (nativeSubclass) {
-		const Subclass = nativeSubclass(MultiKeyMap);
-		t.true(
-			new Subclass() instanceof Subclass,
-			'correct subclassing with native classes #1'
-		);
-		t.true(
-			new Subclass() instanceof MultiKeyMap,
-			'correct subclassing with native classes #2'
-		);
-		t.is(
-			new Subclass().set([1], 2).get([1]),
-			2,
-			'correct subclassing with native classes #3'
-		);
-	}
+	class Subclass extends MultiKeyMap {}
+	t.true(
+		new Subclass() instanceof Subclass,
+		'correct subclassing with native classes #1'
+	);
+	t.true(
+		new Subclass() instanceof MultiKeyMap,
+		'correct subclassing with native classes #2'
+	);
+	t.is(
+		new Subclass().set([1], 2).get([1]),
+		2,
+		'correct subclassing with native classes #3'
+	);
 });
 
 test('MultiKeyMap#clear', t => {
@@ -206,7 +152,7 @@ test('MultiKeyMap#clear', t => {
 	t.is(map.size, 0);
 	t.true(!map.has([1]));
 	t.true(!map.has([2]));
-	const frozen = [freeze({})];
+	const frozen = [Object.freeze({})];
 	map = new MultiKeyMap();
 	map.set([1], 2);
 	map.set(frozen, 3);
@@ -219,9 +165,7 @@ test('MultiKeyMap#clear', t => {
 test('MultiKeyMap#delete', t => {
 	t.is(typeof MultiKeyMap.prototype.delete, 'function');
 	t.is(MultiKeyMap.prototype.delete.length, 1);
-	if (NATIVE) {
-		t.is(MultiKeyMap.prototype.delete.name, 'delete');
-	}
+	t.is(MultiKeyMap.prototype.delete.name, 'delete');
 
 	t.false(Object.prototype.propertyIsEnumerable.call(MultiKeyMap.prototype, 'delete'));
 	const object = {};
@@ -241,7 +185,7 @@ test('MultiKeyMap#delete', t => {
 	t.is(map.size, 4);
 	map.delete([object]);
 	t.is(map.size, 3);
-	const frozen = freeze({});
+	const frozen = Object.freeze({});
 	map.set([frozen], 42);
 	t.is(map.size, 4);
 	map.delete([frozen]);
@@ -296,7 +240,7 @@ test('MultiKeyMap#forEach', t => {
 	map.forEach(value => {
 		map.delete(['0']);
 		if (result !== '') {
-			throw new Error();
+			throw new Error('This shouldn’t happen');
 		}
 
 		result += value;
@@ -315,7 +259,7 @@ test('MultiKeyMap#get', t => {
 	t.is(MultiKeyMap.prototype.get.length, 1);
 	t.false(Object.prototype.propertyIsEnumerable.call(MultiKeyMap.prototype, 'get'));
 	const object = {};
-	const frozen = freeze({});
+	const frozen = Object.freeze({});
 	const map = new MultiKeyMap();
 	map.set([NaN], 1);
 	map.set([2], 1);
@@ -338,7 +282,7 @@ test('MultiKeyMap#has', t => {
 	t.is(MultiKeyMap.prototype.has.length, 1);
 	t.false(Object.prototype.propertyIsEnumerable.call(MultiKeyMap.prototype, 'has'));
 	const object = {};
-	const frozen = freeze({});
+	const frozen = Object.freeze({});
 	const map = new MultiKeyMap();
 	map.set([NaN], 1);
 	map.set([2], 1);
@@ -389,7 +333,7 @@ test('MultiKeyMap#set', t => {
 	map.set([NaN], 3);
 	map.set([NaN], 4);
 	t.is(map.size, 1);
-	const frozen = freeze({});
+	const frozen = Object.freeze({});
 	map = new MultiKeyMap().set([frozen], 42);
 	t.is(map.get([frozen]), 42);
 });
@@ -401,12 +345,10 @@ test('MultiKeyMap#size', t => {
 	const {size} = map;
 	t.is(typeof size, 'number', 'size is number');
 	t.is(size, 1, 'size is correct');
-	if (DESCRIPTORS) {
-		const sizeDescriptor = getOwnPropertyDescriptor(MultiKeyMap.prototype, 'size');
-		t.truthy(sizeDescriptor && sizeDescriptor.get, 'size is getter');
-		t.truthy(sizeDescriptor && !sizeDescriptor.set, 'size isnt setter');
-		t.throws(() => MultiKeyMap.prototype.size, TypeError);
-	}
+	const sizeDescriptor = Object.getOwnPropertyDescriptor(MultiKeyMap.prototype, 'size');
+	t.truthy(sizeDescriptor && sizeDescriptor.get, 'size is getter');
+	t.truthy(sizeDescriptor && !sizeDescriptor.set, 'size isnt setter');
+	t.throws(() => MultiKeyMap.prototype.size, TypeError);
 });
 
 test('MultiKeyMap#@@toStringTag', t => {
