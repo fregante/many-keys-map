@@ -10,8 +10,11 @@ const nullKey = Symbol('null'); // WeakMap key for null
 let keyCounter = 0;
 
 module.exports = class MultiKeyMap extends Map {
-	constructor(pairs) {
+	constructor() {
 		super();
+
+		// eslint-disable-next-line prefer-rest-params
+		const [pairs] = arguments; // Map compat
 		this[objectHashes] = new WeakMap();
 		this[symbolHashes] = new Map(); // https://github.com/tc39/ecma262/issues/1194
 		this[publicKeys] = new Map();
@@ -114,5 +117,13 @@ module.exports = class MultiKeyMap extends Map {
 		const privateKey = this[getPrivateKey](keys);
 		const publicKey = this[publicKeys].get(privateKey);
 		return Boolean(publicKey && super.delete(publicKey) && this[publicKeys].delete(privateKey));
+	}
+
+	get [Symbol.toStringTag]() {
+		return 'MultiKeyMap';
+	}
+
+	get size() {
+		return super.size;
 	}
 };
