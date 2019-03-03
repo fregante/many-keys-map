@@ -13,12 +13,12 @@ module.exports = class MultiKeyMap extends Map {
 	constructor() {
 		super();
 
-		// eslint-disable-next-line prefer-rest-params
-		const [pairs] = arguments; // Map compat
 		this[objectHashes] = new WeakMap();
 		this[symbolHashes] = new Map(); // https://github.com/tc39/ecma262/issues/1194
 		this[publicKeys] = new Map();
 
+		// eslint-disable-next-line prefer-rest-params
+		const [pairs] = arguments; // Map compat
 		if (pairs === null || pairs === undefined) {
 			return;
 		}
