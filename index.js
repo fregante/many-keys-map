@@ -42,9 +42,9 @@ module.exports = class MultiKeyMap extends Map {
 					return this[hashes].get(key);
 				}
 
-				keyCounter++;
-				this[hashes].set(key, keyCounter);
-				return keyCounter;
+				const privateKey = `@@mkm-ref-${keyCounter++}@@`;
+				this[hashes].set(key, privateKey);
+				return privateKey;
 			}
 
 			return key;
