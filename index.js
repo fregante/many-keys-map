@@ -35,23 +35,15 @@ module.exports = class MultiKeyMap extends Map {
 				key = nullKey;
 			}
 
-			if (typeof key === 'object') {
-				if (this[objectHashes].has(key)) {
-					return this[objectHashes].get(key);
+			const hashes = typeof key === 'object' ? objectHashes : typeof key === 'symbol' ? symbolHashes : false;
+
+			if (hashes) {
+				if (this[hashes].has(key)) {
+					return this[hashes].get(key);
 				}
 
 				keyCounter++;
-				this[objectHashes].set(key, keyCounter);
-				return keyCounter;
-			}
-
-			if (typeof key === 'symbol') {
-				if (this[symbolHashes].has(key)) {
-					return this[symbolHashes].get(key);
-				}
-
-				keyCounter++;
-				this[symbolHashes].set(key, keyCounter);
+				this[hashes].set(key, keyCounter);
 				return keyCounter;
 			}
 
@@ -65,18 +57,11 @@ module.exports = class MultiKeyMap extends Map {
 				key = nullKey;
 			}
 
-			if (typeof key === 'object') {
-				if (this[objectHashes].has(key)) {
-					return this[objectHashes].get(key);
-				}
+			const hashes = typeof key === 'object' ? objectHashes : typeof key === 'symbol' ? symbolHashes : false;
 
-				// Impossible key
-				return Math.random() + '.' + Math.random();
-			}
-
-			if (typeof key === 'symbol') {
-				if (this[symbolHashes].has(key)) {
-					return this[symbolHashes].get(key);
+			if (hashes) {
+				if (this[hashes].has(key)) {
+					return this[hashes].get(key);
 				}
 
 				// Impossible key
