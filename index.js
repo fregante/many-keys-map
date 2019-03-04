@@ -36,7 +36,7 @@ module.exports = class MultiKeyMap extends Map {
 		const privateKey = this[getPrivateKey](keys, create);
 
 		let publicKey;
-		if (this[publicKeys].has(privateKey)) {
+		if (privateKey && this[publicKeys].has(privateKey)) {
 			publicKey = this[publicKeys].get(privateKey);
 		} else if (create) {
 			this[publicKeys].set(privateKey, keys);
@@ -47,30 +47,28 @@ module.exports = class MultiKeyMap extends Map {
 	}
 
 	[getPrivateKey](keys, create = false) {
-		return JSON.stringify(keys.map(key => {
+		const privateKeys = [];
+		for (let key of keys) {
 			if (key === null) {
 				key = nullKey;
 			}
 
 			const hashes = typeof key === 'object' ? objectHashes : typeof key === 'symbol' ? symbolHashes : false;
 
-			if (hashes) {
-				if (this[hashes].has(key)) {
-					return this[hashes].get(key);
-				}
-
-				if (create) {
-					const privateKey = `@@mkm-ref-${keyCounter++}@@`;
-					this[hashes].set(key, privateKey);
-					return privateKey;
-				}
-
-				// Impossible key
-				return Math.random() + '.' + Math.random();
+			if (!hashes) {
+				privateKeys.push(key);
+			} else if (this[hashes].has(key)) {
+				privateKeys.push(this[hashes].get(key));
+			} else if (create) {
+				const privateKey = `@@mkm-ref-${keyCounter++}@@`;
+				this[hashes].set(key, privateKey);
+				privateKeys.push(privateKey);
+			} else {
+				return false;
 			}
+		}
 
-			return key;
-		}));
+		return JSON.stringify(privateKeys);
 	}
 
 	set(keys, value) {
