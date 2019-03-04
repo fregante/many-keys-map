@@ -109,6 +109,12 @@ module.exports = class MultiKeyMap extends Map {
 		return Boolean(publicKey && super.delete(publicKey) && this[publicKeys].delete(privateKey));
 	}
 
+	clear() {
+		super.clear();
+		this[symbolHashes].clear();
+		this[publicKeys].clear();
+	}
+
 	get [Symbol.toStringTag]() {
 		return 'MultiKeyMap';
 	}
