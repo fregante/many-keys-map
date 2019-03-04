@@ -283,3 +283,17 @@ test('Mixed types of keys', t => {
 	t.is(map.get([key1, key2, key4, key3]), undefined);
 	t.is(map.get([key1, key2, key3, Symbol(4)]), undefined);
 });
+
+test('Internal state consistency', t => {
+	const map = new MultiKeyMap();
+
+	const keys = [1, 2];
+	map.set(keys, 'happy');
+	t.is(map.get([1, 2]), 'happy');
+	keys.push(3); // Change original object
+
+	const privateKey = JSON.stringify([1, 2]);
+	t.deepEqual(map[MultiKeyMap.publicKeys].get(privateKey), [1, 2], 'Keys must be stored by value, discarding the original Array object');
+
+	// TODO: add more tests
+});

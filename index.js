@@ -39,8 +39,8 @@ module.exports = class MultiKeyMap extends Map {
 		if (privateKey && this[publicKeys].has(privateKey)) {
 			publicKey = this[publicKeys].get(privateKey);
 		} else if (create) {
-			this[publicKeys].set(privateKey, keys);
-			publicKey = keys;
+			publicKey = [...keys]; // Regenerate keys array to avoid external interaction
+			this[publicKeys].set(privateKey, publicKey);
 		}
 
 		return {privateKey, publicKey};
