@@ -123,3 +123,7 @@ module.exports = class MultiKeyMap extends Map {
 		return super.size;
 	}
 };
+
+if (process.env.NODE_ENV === 'test') {
+	Object.assign(module.exports, {publicKeys, symbolHashes});
+}
