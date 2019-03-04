@@ -5,7 +5,7 @@ const getPrivateKey = Symbol('getPrivateKey');
 const publicKeys = Symbol('publicKeys');
 const objectHashes = Symbol('objectHashes');
 const symbolHashes = Symbol('symbolHashes');
-const nullKey = Symbol('null'); // WeakMap key for null
+const nullKey = Symbol('null'); // `objectHashes` key for null
 
 let keyCounter = 0;
 
