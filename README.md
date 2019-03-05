@@ -1,21 +1,21 @@
-# multi-key-map [![Build Status](https://api.travis-ci.com/bfred-it/multi-key-map.svg?branch=master)](https://travis-ci.com/bfred-it/multi-key-map)
+# many-keys-map [![Build Status](https://api.travis-ci.com/bfred-it/many-keys-map.svg?branch=master)](https://travis-ci.com/bfred-it/many-keys-map)
 
 > A `Map` subclass with support for multiple keys for one entry.
 
-A `MultiKeyMap` object is identical to a regular `Map`, which the exception that it only supports a _sequence of keys_ as key, instead of a single key. This will let you attach a value to a specific combination of keys, instead of a single key.
+A `ManyKeysMap` object is identical to a regular `Map`, which the exception that it only supports a _sequence of keys_ as key, instead of a single key. This will let you attach a value to a specific combination of keys, instead of a single key.
 
 ```js
 const regularMap = new Map();
 regularMap.set('hello', true);
 
-const multiKeyMap = new MultiKeyMap();
-multiKeyMap.set(['hello', 'world'], true);
+const manyKeysMap = new ManyKeysMap();
+manyKeysMap.set(['hello', 'world'], true);
 ```
 
 This is useful when the keys cannot be easily combined (i.e. object)
 
 ```js
-const handlers = new MultiKeyMap();
+const handlers = new ManyKeysMap();
 handlers.set([element, 'click'], onClickFn);
 handlers.set([element, 'keypress', {passive: true}], onKeypressFn);
 ```
@@ -25,7 +25,7 @@ The number of keys allowed is unlimited and their order is relevant.
 ## Install
 
 ```
-$ npm install bfred-it/multi-key-map
+$ npm install bfred-it/many-keys-map
 ```
 
 
@@ -34,13 +34,13 @@ $ npm install bfred-it/multi-key-map
 It should work exactly the same as a `Map`, except that the `key` must always be an array.
 
 ```js
-const MultiKeyMap = require('multi-key-map');
+const ManyKeysMap = require('many-keys-map');
 
-const groups = new MultiKeyMap();
+const groups = new ManyKeysMap();
 groups.set([header, 'admin'], true);
 groups.set([target, 'tools'], [1, 'any value is supported']);
 
-const data = new MultiKeyMap([
+const data = new ManyKeysMap([
 	[['hello key'], 'value'],
 	[[42, null], new Date()]
 ]);

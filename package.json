@@ -1,9 +1,9 @@
 {
-	"name": "multi-key-map",
+	"name": "many-keys-map",
 	"version": "0.0.0",
 	"description": "",
 	"license": "MIT",
-	"repository": "bfred-it/multi-key-map",
+	"repository": "bfred-it/many-keys-map",
 	"author": "Federico Brigante <github@bfred.it> (bfred.it)",
 	"keywords": [],
 	"files": [

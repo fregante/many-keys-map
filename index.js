@@ -9,7 +9,7 @@ const nullKey = Symbol('null'); // `objectHashes` key for null
 
 let keyCounter = 0;
 
-module.exports = class MultiKeyMap extends Map {
+module.exports = class ManyKeysMap extends Map {
 	constructor() {
 		super();
 
@@ -114,7 +114,7 @@ module.exports = class MultiKeyMap extends Map {
 	}
 
 	get [Symbol.toStringTag]() {
-		return 'MultiKeyMap';
+		return 'ManyKeysMap';
 	}
 
 	get size() {
