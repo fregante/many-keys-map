@@ -1,4 +1,9 @@
-# many-keys-map [![Build Status](https://api.travis-ci.com/bfred-it/many-keys-map.svg?branch=master)](https://travis-ci.com/bfred-it/many-keys-map)
+# many-keys-map [![(size)][badge-gzip]](#no-link) [![(status)][badge-travis]][link-travis]
+
+  [badge-gzip]: https://img.shields.io/bundlephobia/minzip/many-keys-map.svg?label=gzipped
+  [badge-travis]: https://api.travis-ci.com/bfred-it/many-keys-map.svg?branch=master
+  [link-travis]: https://travis-ci.org/bfred-it/many-keys-map
+  [link-npm]: https://www.npmjs.com/package/many-keys-map
 
 > A `Map` subclass with support for multiple keys for one entry.
 
@@ -25,7 +30,7 @@ The number of keys allowed is unlimited and their order is relevant.
 ## Install
 
 ```
-$ npm install bfred-it/many-keys-map
+$ npm install many-keys-map
 ```
 
 
