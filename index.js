@@ -8,6 +8,11 @@ const symbolHashes = Symbol('symbolHashes');
 const nullKey = Symbol('null'); // `objectHashes` key for null
 
 let keyCounter = 0;
+function checkKeys(keys) {
+	if (!Array.isArray(keys)) {
+		throw new TypeError('The keys parameter must be an array');
+	}
+}
 
 module.exports = class ManyKeysMap extends Map {
 	constructor() {
@@ -72,37 +77,25 @@ module.exports = class ManyKeysMap extends Map {
 	}
 
 	set(keys, value) {
-		if (!Array.isArray(keys)) {
-			throw new TypeError('The keys parameter must be an array');
-		}
-
+		checkKeys(keys);
 		const {publicKey} = this[getInternalKeys](keys, true);
 		return super.set(publicKey, value);
 	}
 
 	get(keys) {
-		if (!Array.isArray(keys)) {
-			throw new TypeError('The keys parameter must be an array');
-		}
-
+		checkKeys(keys);
 		const {publicKey} = this[getInternalKeys](keys);
 		return super.get(publicKey);
 	}
 
 	has(keys) {
-		if (!Array.isArray(keys)) {
-			throw new TypeError('The keys parameter must be an array');
-		}
-
+		checkKeys(keys);
 		const {publicKey} = this[getInternalKeys](keys);
 		return super.has(publicKey);
 	}
 
 	delete(keys) {
-		if (!Array.isArray(keys)) {
-			throw new TypeError('The keys parameter must be an array');
-		}
-
+		checkKeys(keys);
 		const {publicKey, privateKey} = this[getInternalKeys](keys);
 		return Boolean(publicKey && super.delete(publicKey) && this[publicKeys].delete(privateKey));
 	}
