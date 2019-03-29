@@ -72,8 +72,15 @@ for (const [keys, value] of data) {
 // => date Object
 ```
 
+### Allowed keys
 
-## License
+1. Keys must always be an array, e.g. `.set([a, b], 'hello')`
+2. Only the values in the `keys` array are stored, not the array itself — so future changes to the array won’t be reflected in the map.
+3. `ManyKeysMap` supports any number of keys, any of these are valid and different: `.get([a])` and `.get([a, b, c, d, e, f, g])`
+4. The order of keys is irrelevant, so `.get([a, b])` is different from `.get(b, a)`
+5. The keys can be anything supported by `Map`.
 
-MIT © [Federico Brigante](http://twitter.com/bfred_it)
 
+# Related
+
+- [many-keys-weakmap](https://github.com/bfred-it/many-keys-weakmap) - A `WeakMap` subclass with support for multiple keys for one entry.
