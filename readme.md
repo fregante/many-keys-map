@@ -23,6 +23,8 @@ This is useful when the keys cannot be easily combined (i.e. object)
 const handlers = new ManyKeysMap();
 handlers.set([element, 'click'], onClickFn);
 handlers.set([element, 'keypress', {passive: true}], onKeypressFn);
+// Since objects are stored by reference, it’s best to stringify `options` object like the above
+handlers.set([element, 'keypress', JSON.stringify({passive: true})], onKeypressFn);
 ```
 
 The number of keys allowed is unlimited and their order is relevant.
