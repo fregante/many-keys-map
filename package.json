@@ -1,6 +1,6 @@
 {
 	"name": "many-keys-map",
-	"version": "1.0.1",
+	"version": "1.0.2",
 	"description": "A `Map` subclass with support for multiple keys for one entry.",
 	"license": "MIT",
 	"repository": "bfred-it/many-keys-map",
