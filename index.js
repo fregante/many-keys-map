@@ -58,7 +58,7 @@ module.exports = class ManyKeysMap extends Map {
 				key = nullKey;
 			}
 
-			const hashes = typeof key === 'object' ? objectHashes : typeof key === 'symbol' ? symbolHashes : false;
+			const hashes = typeof key === 'object' || typeof key === 'function' ? objectHashes : typeof key === 'symbol' ? symbolHashes : false;
 
 			if (!hashes) {
 				privateKeys.push(key);

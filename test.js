@@ -218,27 +218,50 @@ test('All types of keys', t => {
 	t.is(map[ManyKeysMap.publicKeys].size, 0);
 
 	let key = {};
+	let key2 = {}; // A second seemigly-identical key ensures that objects are stored by reference
 	t.is(map.set([key], 'object').get([key]), 'object');
-	t.is(map.size, 1);
+	t.is(map.set([key2], 'object2').get([key2]), 'object2');
+	t.is(map.size, 2);
 	t.true(map.delete([key]));
+	t.is(map.size, 1);
+	t.true(map.delete([key2]));
 	t.is(map.size, 0);
 	t.is(map[ManyKeysMap.publicKeys].size, 0);
 
 	key = [];
+	key2 = [];
 	t.is(map.set([key], 'array').get([key]), 'array');
-	t.is(map.size, 1);
+	t.is(map.set([key2], 'array2').get([key2]), 'array2');
+	t.is(map.size, 2);
 	t.true(map.delete([key]));
+	t.is(map.size, 1);
+	t.true(map.delete([key2]));
+	t.is(map.size, 0);
+	t.is(map[ManyKeysMap.publicKeys].size, 0);
+
+	key = () => {};
+	key2 = () => {};
+	t.is(map.set([key], 'function').get([key]), 'function');
+	t.is(map.set([key2], 'function2').get([key2]), 'function2');
+	t.is(map.size, 2);
+	t.true(map.delete([key]));
+	t.is(map.size, 1);
+	t.true(map.delete([key2]));
 	t.is(map.size, 0);
 	t.is(map[ManyKeysMap.publicKeys].size, 0);
 
 	key = Symbol('symbol');
+	key2 = Symbol('symbol');
 	t.is(map.set([key], 'symbol').get([key]), 'symbol');
-	t.is(map.size, 1);
-	t.is(map[ManyKeysMap.symbolHashes].size, 1);
+	t.is(map.set([key2], 'symbol2').get([key2]), 'symbol2');
+	t.is(map.size, 2);
+	t.is(map[ManyKeysMap.symbolHashes].size, 2);
 	t.true(map.delete([key]));
+	t.is(map.size, 1);
+	t.true(map.delete([key2]));
 	t.is(map.size, 0);
 	t.is(map[ManyKeysMap.publicKeys].size, 0);
-	t.is(map[ManyKeysMap.symbolHashes].size, 1); // Known leak, because of https://github.com/tc39/ecma262/issues/1194
+	t.is(map[ManyKeysMap.symbolHashes].size, 2); // Known leak, because of https://github.com/tc39/ecma262/issues/1194
 
 	t.is(map.set([null], 'null').get([null]), 'null');
 	t.is(map.size, 1);
