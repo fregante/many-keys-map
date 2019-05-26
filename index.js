@@ -1,26 +1,16 @@
 'use strict';
 
-const getInternalKeys = Symbol('getInternalKeys');
-const getPrivateKey = Symbol('getPrivateKey');
-const publicKeys = Symbol('publicKeys');
-const objectHashes = Symbol('objectHashes');
-const symbolHashes = Symbol('symbolHashes');
 const nullKey = Symbol('null'); // `objectHashes` key for null
 
 let keyCounter = 0;
-function checkKeys(keys) {
-	if (!Array.isArray(keys)) {
-		throw new TypeError('The keys parameter must be an array');
-	}
-}
 
 module.exports = class ManyKeysMap extends Map {
 	constructor() {
 		super();
 
-		this[objectHashes] = new WeakMap();
-		this[symbolHashes] = new Map(); // https://github.com/tc39/ecma262/issues/1194
-		this[publicKeys] = new Map();
+		this._objectHashes = new WeakMap();
+		this._symbolHashes = new Map(); // https://github.com/tc39/ecma262/issues/1194
+		this._publicKeys = new Map();
 
 		// eslint-disable-next-line prefer-rest-params
 		const [pairs] = arguments; // Map compat
@@ -37,28 +27,32 @@ module.exports = class ManyKeysMap extends Map {
 		}
 	}
 
-	[getInternalKeys](keys, create = false) {
-		const privateKey = this[getPrivateKey](keys, create);
+	_getPublicKeys(keys, create = false) {
+		if (!Array.isArray(keys)) {
+			throw new TypeError('The keys parameter must be an array');
+		}
+
+		const privateKey = this._getPrivateKey(keys, create);
 
 		let publicKey;
-		if (privateKey && this[publicKeys].has(privateKey)) {
-			publicKey = this[publicKeys].get(privateKey);
+		if (privateKey && this._publicKeys.has(privateKey)) {
+			publicKey = this._publicKeys.get(privateKey);
 		} else if (create) {
 			publicKey = [...keys]; // Regenerate keys array to avoid external interaction
-			this[publicKeys].set(privateKey, publicKey);
+			this._publicKeys.set(privateKey, publicKey);
 		}
 
 		return {privateKey, publicKey};
 	}
 
-	[getPrivateKey](keys, create = false) {
+	_getPrivateKey(keys, create = false) {
 		const privateKeys = [];
 		for (let key of keys) {
 			if (key === null) {
 				key = nullKey;
 			}
 
-			const hashes = typeof key === 'object' || typeof key === 'function' ? objectHashes : typeof key === 'symbol' ? symbolHashes : false;
+			const hashes = typeof key === 'object' || typeof key === 'function' ? '_objectHashes' : typeof key === 'symbol' ? '_symbolHashes' : false;
 
 			if (!hashes) {
 				privateKeys.push(key);
@@ -77,33 +71,29 @@ module.exports = class ManyKeysMap extends Map {
 	}
 
 	set(keys, value) {
-		checkKeys(keys);
-		const {publicKey} = this[getInternalKeys](keys, true);
+		const {publicKey} = this._getPublicKeys(keys, true);
 		return super.set(publicKey, value);
 	}
 
 	get(keys) {
-		checkKeys(keys);
-		const {publicKey} = this[getInternalKeys](keys);
+		const {publicKey} = this._getPublicKeys(keys);
 		return super.get(publicKey);
 	}
 
 	has(keys) {
-		checkKeys(keys);
-		const {publicKey} = this[getInternalKeys](keys);
+		const {publicKey} = this._getPublicKeys(keys);
 		return super.has(publicKey);
 	}
 
 	delete(keys) {
-		checkKeys(keys);
-		const {publicKey, privateKey} = this[getInternalKeys](keys);
-		return Boolean(publicKey && super.delete(publicKey) && this[publicKeys].delete(privateKey));
+		const {publicKey, privateKey} = this._getPublicKeys(keys);
+		return Boolean(publicKey && super.delete(publicKey) && this._publicKeys.delete(privateKey));
 	}
 
 	clear() {
 		super.clear();
-		this[symbolHashes].clear();
-		this[publicKeys].clear();
+		this._symbolHashes.clear();
+		this._publicKeys.clear();
 	}
 
 	get [Symbol.toStringTag]() {
@@ -114,7 +104,3 @@ module.exports = class ManyKeysMap extends Map {
 		return super.size;
 	}
 };
-
-if (process.env.NODE_ENV === 'test') {
-	Object.assign(module.exports, {publicKeys, symbolHashes});
-}
