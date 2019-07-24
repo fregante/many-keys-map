@@ -2,32 +2,32 @@
 	"name": "many-keys-map",
 	"version": "1.0.2",
 	"description": "A `Map` subclass with support for multiple keys for one entry.",
-	"license": "MIT",
-	"repository": "bfred-it/many-keys-map",
-	"author": "Federico Brigante <github@bfred.it> (bfred.it)",
 	"keywords": [
-		"multiple",
-		"keys",
-		"map",
-		"multimap",
-		"multi",
+		"any",
 		"key",
+		"keys",
 		"many",
-		"any"
+		"map",
+		"multi",
+		"multimap",
+		"multiple"
 	],
+	"repository": "fregante/many-keys-map",
+	"license": "MIT",
+	"author": "Federico Brigante <opensource@bfred.it> (bfred.it)",
 	"files": [
 		"index.js"
 	],
 	"scripts": {
 		"test": "xo && ava"
 	},
-	"devDependencies": {
-		"ava": "*",
-		"xo": "*"
-	},
 	"xo": {
 		"rules": {
 			"no-new": 0
 		}
+	},
+	"devDependencies": {
+		"ava": "*",
+		"xo": "*"
 	}
 }

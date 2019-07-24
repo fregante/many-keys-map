@@ -1,8 +1,8 @@
 # many-keys-map [![(size)][badge-gzip]](#no-link) [![(status)][badge-travis]][link-travis]
 
   [badge-gzip]: https://img.shields.io/bundlephobia/minzip/many-keys-map.svg?label=gzipped
-  [badge-travis]: https://api.travis-ci.com/bfred-it/many-keys-map.svg?branch=master
-  [link-travis]: https://travis-ci.org/bfred-it/many-keys-map
+  [badge-travis]: https://api.travis-ci.com/fregante/many-keys-map.svg?branch=master
+  [link-travis]: https://travis-ci.org/fregante/many-keys-map
   [link-npm]: https://www.npmjs.com/package/many-keys-map
 
 > A `Map` subclass with support for multiple keys for one entry.
@@ -85,4 +85,4 @@ for (const [keys, value] of data) {
 
 # Related
 
-- [many-keys-weakmap](https://github.com/bfred-it/many-keys-weakmap) - A `WeakMap` subclass with support for multiple keys for one entry.
+- [many-keys-weakmap](https://github.com/fregante/many-keys-weakmap) - A `WeakMap` subclass with support for multiple keys for one entry.
