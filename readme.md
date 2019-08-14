@@ -27,7 +27,7 @@ handlers.set([element, 'keypress', {passive: true}], onKeypressFn);
 handlers.set([element, 'keypress', JSON.stringify({passive: true})], onKeypressFn);
 ```
 
-The number of keys allowed is unlimited and their order is relevant.
+The number of keys allowed is unlimited and their order matters.
 
 ## Install
 
@@ -79,7 +79,7 @@ for (const [keys, value] of data) {
 1. Keys must always be an array, e.g. `.set([a, b], 'hello')`
 2. Only the values in the `keys` array are stored, not the array itself — so future changes to the array won’t be reflected in the map.
 3. `ManyKeysMap` supports any number of keys, any of these are valid and different: `.get([a])` and `.get([a, b, c, d, e, f, g])`
-4. The order of keys is irrelevant, so `.get([a, b])` is different from `.get(b, a)`
+4. The order of keys matters, so `.get([a, b])` is different from `.get([b, a])`
 5. The keys can be anything supported by `Map`.
 
 
