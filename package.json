@@ -28,7 +28,7 @@
 		}
 	},
 	"devDependencies": {
-		"ava": "*",
+		"ava": "^2",
 		"xo": "^0.20"
 	}
 }
