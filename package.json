@@ -16,6 +16,7 @@
 	"license": "MIT",
 	"author": "Federico Brigante <opensource@bfred.it> (bfred.it)",
 	"files": [
+		"index.d.ts",
 		"index.js"
 	],
 	"scripts": {
@@ -27,7 +28,7 @@
 		}
 	},
 	"devDependencies": {
-		"ava": "*",
-		"xo": "*"
+		"ava": "^2",
+		"xo": "^0.20"
 	}
 }
