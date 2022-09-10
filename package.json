@@ -13,8 +13,10 @@
 		"multiple"
 	],
 	"repository": "fregante/many-keys-map",
+	"funding": "https://github.com/sponsors/fregante",
 	"license": "MIT",
-	"author": "Federico Brigante <opensource@bfred.it> (bfred.it)",
+	"author": "Federico Brigante <me@fregante.com> (https://fregante.com)",
+	"type": "module",
 	"files": [
 		"index.d.ts",
 		"index.js"
@@ -28,7 +30,7 @@
 		}
 	},
 	"devDependencies": {
-		"ava": "^2",
-		"xo": "^0.20"
+		"ava": "^4",
+		"xo": "^0.52"
 	}
 }

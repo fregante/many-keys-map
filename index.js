@@ -1,10 +1,8 @@
-'use strict';
-
 const nullKey = Symbol('null'); // `objectHashes` key for null
 
 let keyCounter = 0;
 
-module.exports = class ManyKeysMap extends Map {
+export default class ManyKeysMap extends Map {
 	constructor() {
 		super();
 
@@ -12,7 +10,6 @@ module.exports = class ManyKeysMap extends Map {
 		this._symbolHashes = new Map(); // https://github.com/tc39/ecma262/issues/1194
 		this._publicKeys = new Map();
 
-		// eslint-disable-next-line prefer-rest-params
 		const [pairs] = arguments; // Map compat
 		if (pairs === null || pairs === undefined) {
 			return;
@@ -52,7 +49,7 @@ module.exports = class ManyKeysMap extends Map {
 				key = nullKey;
 			}
 
-			const hashes = typeof key === 'object' || typeof key === 'function' ? '_objectHashes' : typeof key === 'symbol' ? '_symbolHashes' : false;
+			const hashes = typeof key === 'object' || typeof key === 'function' ? '_objectHashes' : (typeof key === 'symbol' ? '_symbolHashes' : false);
 
 			if (!hashes) {
 				privateKeys.push(key);
@@ -103,4 +100,4 @@ module.exports = class ManyKeysMap extends Map {
 	get size() {
 		return super.size;
 	}
-};
+}

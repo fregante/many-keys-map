@@ -1,1 +1,1 @@
-export = Map;
+export default Map;

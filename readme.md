@@ -1,8 +1,6 @@
-# many-keys-map [![(size)][badge-gzip]](#no-link) [![(status)][badge-travis]][link-travis]
+# many-keys-map [![(size)][badge-gzip]](#no-link)
 
   [badge-gzip]: https://img.shields.io/bundlephobia/minzip/many-keys-map.svg?label=gzipped
-  [badge-travis]: https://api.travis-ci.com/fregante/many-keys-map.svg?branch=master
-  [link-travis]: https://travis-ci.org/fregante/many-keys-map
   [link-npm]: https://www.npmjs.com/package/many-keys-map
 
 > A `Map` subclass with support for multiple keys for one entry.
@@ -41,7 +39,7 @@ $ npm install many-keys-map
 It should work exactly the same as a `Map`, except that the `key` must always be an array.
 
 ```js
-const ManyKeysMap = require('many-keys-map');
+import ManyKeysMap from 'many-keys-map';
 
 const groups = new ManyKeysMap();
 groups.set([header, 'admin'], true);
