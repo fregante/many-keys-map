@@ -1,3 +1,4 @@
+/* eslint-disable unicorn/no-array-push-push, unicorn/no-array-for-each, unicorn/prefer-number-properties,  -- it's part of the test */
 /*
 
 Copyright(c) 2014 - 2019 Denis Pushkarev
@@ -24,8 +25,7 @@ THE SOFTWARE.
 // https://github.com/zloirock/core-js/blob/4d3549dc0490e2d581006de87350006852754d10/tests/tests/es.map.js
 
 import test from 'ava';
-
-const ManyKeysMap = require('.');
+import ManyKeysMap from './index.js';
 
 const isIterator = it => typeof it === 'object' && typeof it.next === 'function';
 
@@ -41,9 +41,9 @@ function createIterable(elements, methods) {
 					iterable.called = true;
 					return {
 						value: elements[index++],
-						done: index > elements.length
+						done: index > elements.length,
 					};
-				}
+				},
 			};
 			if (methods) {
 				for (const key of Object.keys(methods)) {
@@ -52,7 +52,7 @@ function createIterable(elements, methods) {
 			}
 
 			return iterator;
-		}
+		},
 	};
 	return iterable;
 }
@@ -71,12 +71,12 @@ test('ManyKeysMap', t => {
 	t.is(
 		new ManyKeysMap(createIterable([[[1], 1], [[2], 2], [[3], 3]])).size,
 		3,
-		'Init from iterable'
+		'Init from iterable',
 	);
 	t.is(
 		new ManyKeysMap([[Object.freeze([{}]), 1], [[2], 3]]).size,
 		2,
-		'Support frozen objects'
+		'Support frozen objects',
 	);
 	let done = false;
 	try {
@@ -85,10 +85,10 @@ test('ManyKeysMap', t => {
 				return() {
 					done = true;
 					return true;
-				}
-			})
+				},
+			}),
 		);
-	} catch (error) {
+	} catch {
 		/* Empty */
 	}
 
@@ -98,7 +98,7 @@ test('ManyKeysMap', t => {
 	array['@@iterator'] = undefined;
 	array[Symbol.iterator] = function () {
 		done = true;
-		return [][Symbol.iterator].call(this);
+		return Array.prototype[Symbol.iterator].call(this);
 	};
 
 	new ManyKeysMap(array);
@@ -123,16 +123,16 @@ test('ManyKeysMap', t => {
 	class Subclass extends ManyKeysMap {}
 	t.true(
 		new Subclass() instanceof Subclass,
-		'correct subclassing with native classes #1'
+		'correct subclassing with native classes #1',
 	);
 	t.true(
 		new Subclass() instanceof ManyKeysMap,
-		'correct subclassing with native classes #2'
+		'correct subclassing with native classes #2',
 	);
 	t.is(
 		new Subclass().set([1], 2).get([1]),
 		2,
-		'correct subclassing with native classes #3'
+		'correct subclassing with native classes #3',
 	);
 });
 
@@ -217,7 +217,7 @@ test('ManyKeysMap#forEach', t => {
 		7: [3],
 		5: [2],
 		4: [1],
-		9: [object]
+		9: [object],
 	});
 	map = new ManyKeysMap();
 	map.set(['0'], 9);
@@ -355,12 +355,12 @@ test('ManyKeysMap#@@toStringTag', t => {
 	t.is(
 		ManyKeysMap.prototype[Symbol.toStringTag],
 		'ManyKeysMap',
-		'ManyKeysMap::@@toStringTag is `ManyKeysMap`'
+		'ManyKeysMap::@@toStringTag is `ManyKeysMap`',
 	);
 	t.is(
 		String(new ManyKeysMap()),
 		'[object ManyKeysMap]',
-		'correct stringification'
+		'correct stringification',
 	);
 });
 
@@ -402,19 +402,19 @@ test('ManyKeysMap#keys', t => {
 	t.is(iterator[Symbol.toStringTag], 'Map Iterator');
 	t.deepEqual(iterator.next(), {
 		value: ['a'],
-		done: false
+		done: false,
 	});
 	t.deepEqual(iterator.next(), {
 		value: ['s'],
-		done: false
+		done: false,
 	});
 	t.deepEqual(iterator.next(), {
 		value: ['d'],
-		done: false
+		done: false,
 	});
 	t.deepEqual(iterator.next(), {
 		value: undefined,
-		done: true
+		done: true,
 	});
 });
 
@@ -432,19 +432,19 @@ test('ManyKeysMap#values', t => {
 	t.is(iterator[Symbol.toStringTag], 'Map Iterator');
 	t.deepEqual(iterator.next(), {
 		value: 'q',
-		done: false
+		done: false,
 	});
 	t.deepEqual(iterator.next(), {
 		value: 'w',
-		done: false
+		done: false,
 	});
 	t.deepEqual(iterator.next(), {
 		value: 'e',
-		done: false
+		done: false,
 	});
 	t.deepEqual(iterator.next(), {
 		value: undefined,
-		done: true
+		done: true,
 	});
 });
 
@@ -462,19 +462,19 @@ test('ManyKeysMap#entries', t => {
 	t.is(iterator[Symbol.toStringTag], 'Map Iterator');
 	t.deepEqual(iterator.next(), {
 		value: [['a'], 'q'],
-		done: false
+		done: false,
 	});
 	t.deepEqual(iterator.next(), {
 		value: [['s'], 'w'],
-		done: false
+		done: false,
 	});
 	t.deepEqual(iterator.next(), {
 		value: [['d'], 'e'],
-		done: false
+		done: false,
 	});
 	t.deepEqual(iterator.next(), {
 		value: undefined,
-		done: true
+		done: true,
 	});
 });
 
@@ -492,18 +492,18 @@ test('ManyKeysMap#@@iterator', t => {
 	t.is(String(iterator), '[object Map Iterator]');
 	t.deepEqual(iterator.next(), {
 		value: [['a'], 'q'],
-		done: false
+		done: false,
 	});
 	t.deepEqual(iterator.next(), {
 		value: [['s'], 'w'],
-		done: false
+		done: false,
 	});
 	t.deepEqual(iterator.next(), {
 		value: [['d'], 'e'],
-		done: false
+		done: false,
 	});
 	t.deepEqual(iterator.next(), {
 		value: undefined,
-		done: true
+		done: true,
 	});
 });

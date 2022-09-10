@@ -1,6 +1,6 @@
+/* eslint-disable unicorn/no-array-for-each, unicorn/no-array-callback-reference -- It's part of the test */
 import test from 'ava';
-
-const ManyKeysMap = require('.');
+import ManyKeysMap from './index.js';
 
 test('Basics', t => {
 	const map = new ManyKeysMap();
@@ -37,7 +37,7 @@ test('Set', t => {
 
 	const prefilledMap = new ManyKeysMap([
 		[['-'], 'first'],
-		[[':', '-'], 'second']
+		[[':', '-'], 'second'],
 	]);
 	t.is(prefilledMap.size, 2);
 });
@@ -46,7 +46,7 @@ test('Get', t => {
 	const map = new ManyKeysMap([
 		[['-'], 'first'],
 		[[':', '-'], 'second'],
-		[[':', '-', '%'], 'third']
+		[[':', '-', '%'], 'third'],
 	]);
 
 	t.is(map.get(['-']), 'first');
@@ -61,7 +61,7 @@ test('Has', t => {
 	const map = new ManyKeysMap([
 		[['-'], 'first'],
 		[[':', '-'], 'second'],
-		[[':', '-', '%'], 'third']
+		[[':', '-', '%'], 'third'],
 	]);
 
 	t.true(map.has(['-']));
@@ -83,7 +83,7 @@ test('Delete', t => {
 		[[object], 'fourth'],
 		[[object, object], 'fifth'],
 		[[symbol], 'sixth'],
-		[[symbol, object], 'seventh']
+		[[symbol, object], 'seventh'],
 	]);
 
 	t.is(map.size, 7);
@@ -136,7 +136,7 @@ test('Clear', t => {
 		[['-'], 'first'],
 		[[':', '-'], 'second'],
 		[[':', '-', '%'], 'third'],
-		[[{}, [], new Set(), Symbol(1), null], 'fourth']
+		[[{}, [], new Set(), Symbol(1), null], 'fourth'],
 	]);
 
 	t.is(map.size, 4);
@@ -158,7 +158,7 @@ test('Iterators', t => {
 	const pairs = [
 		[['-'], 'first'],
 		[[':', '-'], 'second'],
-		[[':', '-', '%'], 'third']
+		[[':', '-', '%'], 'third'],
 	];
 	const map = new ManyKeysMap(pairs);
 	const regularMap = new Map(pairs);
@@ -211,9 +211,9 @@ test('All types of keys', t => {
 	t.is(map.size, 0);
 	t.is(map._publicKeys.size, 0);
 
-	t.is(map.set([NaN], 'NaN').get([NaN]), 'NaN');
+	t.is(map.set([Number.NaN], 'NaN').get([Number.NaN]), 'NaN');
 	t.is(map.size, 1);
-	t.true(map.delete([NaN]));
+	t.true(map.delete([Number.NaN]));
 	t.is(map.size, 0);
 	t.is(map._publicKeys.size, 0);
 
@@ -293,7 +293,7 @@ test('Mixed types of keys', t => {
 	t.is(map.size, 3);
 	t.is(map.get([undefined]), 'undefined');
 	t.is(map.get(['undefined']), undefined);
-	t.is(map.get([,]), 'undefined'); // eslint-disable-line no-sparse-arrays,comma-spacing
+	t.is(map.get([,]), 'undefined'); // eslint-disable-line no-sparse-arrays
 
 	const key1 = {};
 	const key2 = {};

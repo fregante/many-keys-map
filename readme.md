@@ -41,7 +41,7 @@ $ npm install many-keys-map
 It should work exactly the same as a `Map`, except that the `key` must always be an array.
 
 ```js
-const ManyKeysMap = require('many-keys-map');
+import ManyKeysMap from 'many-keys-map';
 
 const groups = new ManyKeysMap();
 groups.set([header, 'admin'], true);
