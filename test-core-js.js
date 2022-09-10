@@ -348,7 +348,7 @@ test('ManyKeysMap#size', t => {
 	const sizeDescriptor = Object.getOwnPropertyDescriptor(ManyKeysMap.prototype, 'size');
 	t.truthy(sizeDescriptor && sizeDescriptor.get, 'size is getter');
 	t.truthy(sizeDescriptor && !sizeDescriptor.set, 'size isnt setter');
-	t.throws(() => ManyKeysMap.prototype.size, {instanceof: TypeError});
+	t.throws(() => ManyKeysMap.prototype.size, {instanceOf: TypeError});
 });
 
 test('ManyKeysMap#@@toStringTag', t => {

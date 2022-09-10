@@ -1,6 +1,6 @@
 env:
-  IMPORT_TEXT: import YourModuleHere from
-  NPM_MODULE_NAME: your-module-here
+  IMPORT_TEXT: import ManyKeysMap from
+  NPM_MODULE_NAME: many-keys-map
 
 # FILE GENERATED WITH: npx ghat fregante/ghatemplates/esm-lint
 # SOURCE: https://github.com/fregante/ghatemplates
