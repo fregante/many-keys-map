@@ -250,7 +250,7 @@ test('ManyKeysMap#forEach', t => {
 		ManyKeysMap.prototype.forEach.call(new Set(), () => {
 			/* Empty */
 		});
-	}, 'Method Map.prototype.forEach called on incompatible receiver #<Set>');
+	}, {message: 'Method Map.prototype.forEach called on incompatible receiver #<Set>'});
 });
 
 test('ManyKeysMap#get', t => {
@@ -348,7 +348,7 @@ test('ManyKeysMap#size', t => {
 	const sizeDescriptor = Object.getOwnPropertyDescriptor(ManyKeysMap.prototype, 'size');
 	t.truthy(sizeDescriptor && sizeDescriptor.get, 'size is getter');
 	t.truthy(sizeDescriptor && !sizeDescriptor.set, 'size isnt setter');
-	t.throws(() => ManyKeysMap.prototype.size, TypeError);
+	t.throws(() => ManyKeysMap.prototype.size, {instanceof: TypeError});
 });
 
 test('ManyKeysMap#@@toStringTag', t => {
