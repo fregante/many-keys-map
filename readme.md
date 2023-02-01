@@ -5,7 +5,7 @@
 
 > A `Map` subclass with support for multiple keys for one entry.
 
-A `ManyKeysMap` object is identical to a regular `Map`, which the exception that it only supports a _sequence of keys_ as key, instead of a single key. This will let you attach a value to a specific combination of keys, instead of a single key.
+A `ManyKeysMap` object is identical to a regular `Map`, with the exception that it only supports a _sequence of keys_ as key, instead of a single key. This will let you attach a value to a specific combination of keys, instead of a single key.
 
 ```js
 const regularMap = new Map();
