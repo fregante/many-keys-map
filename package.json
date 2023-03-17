@@ -17,11 +17,13 @@
 	"license": "MIT",
 	"author": "Federico Brigante <me@fregante.com> (https://fregante.com)",
 	"type": "module",
+	"exports": "./index.js",
+	"main": "./index.js",
+	"types": "./index.d.ts",
 	"files": [
 		"index.d.ts",
 		"index.js"
 	],
-	"main": "index.js",
 	"scripts": {
 		"test": "xo && ava"
 	},
