@@ -1,6 +1,6 @@
 {
 	"name": "many-keys-map",
-	"version": "2.0.0",
+	"version": "2.0.1",
 	"description": "A `Map` subclass with support for multiple keys for one entry.",
 	"keywords": [
 		"any",
