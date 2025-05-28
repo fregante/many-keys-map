@@ -1,4 +1,4 @@
-/* eslint-disable unicorn/no-array-push-push, unicorn/no-array-for-each, unicorn/prefer-number-properties,  -- it's part of the test */
+/* eslint-disable unicorn/no-array-for-each, unicorn/prefer-number-properties, @stylistic/function-paren-newline -- it's part of the test */
 /*
 
 Copyright(c) 2014 - 2019 Denis Pushkarev
@@ -384,7 +384,7 @@ test('ManyKeysMap Iterator', t => {
 	t.true(map.delete(['c']));
 	map.set(['e']);
 	results.push(iterator.next().value);
-	results.push(iterator.next().value);
+	results.push(iterator.next().value); // eslint-disable-line unicorn/prefer-single-call
 	t.true(iterator.next().done);
 	map.set(['f']);
 	t.true(iterator.next().done);

@@ -1,4 +1,4 @@
-/* eslint-disable unicorn/no-array-for-each, unicorn/no-array-callback-reference -- It's part of the test */
+/* eslint-disable unicorn/no-array-for-each, no-warning-comments -- It's part of the test */
 import test from 'ava';
 import ManyKeysMap from './index.js';
 
@@ -14,7 +14,7 @@ test('Basics', t => {
 	t.deepEqual([...map.entries()], []);
 	t.deepEqual([...map.values()], []);
 	t.deepEqual([...map.keys()], []);
-	map.forEach(t.fail);
+	map.forEach(_ => t.fail());
 });
 
 test('Set', t => {
