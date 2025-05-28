@@ -102,8 +102,7 @@ test('ManyKeysMap', t => {
 		done = true;
 		return Array.prototype[Symbol.iterator].call(this);
 	};
-	// eslint-disable-next-line no-unused-vars
-	const _unused = new ManyKeysMap(array);
+	new ManyKeysMap(array);
 	t.true(done);
 
 	const object = {};
