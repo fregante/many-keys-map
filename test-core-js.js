@@ -93,6 +93,8 @@ test('ManyKeysMap', t => {
 	}
 
 	t.true(done, '.return #throw');
+
+	// Intentionally instantiating for side effects only
 	const array = [];
 	done = false;
 	array['@@iterator'] = undefined;
@@ -100,9 +102,10 @@ test('ManyKeysMap', t => {
 		done = true;
 		return Array.prototype[Symbol.iterator].call(this);
 	};
-
-	new ManyKeysMap(array);
+	// eslint-disable-next-line no-unused-vars
+	const _unused = new ManyKeysMap(array);
 	t.true(done);
+
 	const object = {};
 	new ManyKeysMap().set([object], 1);
 	const results = [];

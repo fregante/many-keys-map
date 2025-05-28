@@ -1,4 +1,4 @@
-# many-keys-map [![(size)][badge-gzip]](#no-link)
+# many-keys-map [![(size)][badge-gzip]](#no-link) [![XO code style](https://shields.io/badge/code_style-5ed9c7?logo=xo&labelColor=gray&logoSize=auto)](https://github.com/xojs/xo)
 
   [badge-gzip]: https://img.shields.io/bundlephobia/minzip/many-keys-map.svg?label=gzipped
   [link-npm]: https://www.npmjs.com/package/many-keys-map
