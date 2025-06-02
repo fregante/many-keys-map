@@ -1,4 +1,4 @@
-/* eslint-disable unicorn/no-array-push-push, unicorn/no-array-for-each, unicorn/prefer-number-properties,  -- it's part of the test */
+/* eslint-disable unicorn/no-array-for-each, unicorn/prefer-number-properties,  -- it's part of the test */
 /*
 
 Copyright(c) 2014 - 2019 Denis Pushkarev
@@ -80,14 +80,12 @@ test('ManyKeysMap', t => {
 	);
 	let done = false;
 	try {
-		new ManyKeysMap(
-			createIterable([null, 1, 2], {
-				return() {
-					done = true;
-					return true;
-				},
-			}),
-		);
+		new ManyKeysMap(createIterable([null, 1, 2], {
+			return() {
+				done = true;
+				return true;
+			},
+		}));
 	} catch {
 		/* Empty */
 	}
