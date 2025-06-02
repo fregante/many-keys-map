@@ -1,5 +1,5 @@
 env:
-  IMPORT_STATEMENT: import ManyKeysMap from "many-keys-map"
+  IMPORT_STATEMENT: export { default } from "many-keys-map"
 
 # FILE GENERATED WITH: npx ghat fregante/ghatemplates/esm-lint
 # SOURCE: https://github.com/fregante/ghatemplates
