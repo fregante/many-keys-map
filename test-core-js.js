@@ -1,4 +1,4 @@
-/* eslint-disable unicorn/no-array-for-each, unicorn/prefer-number-properties, @stylistic/function-paren-newline -- it's part of the test */
+/* eslint-disable unicorn/no-array-for-each, unicorn/prefer-number-properties,  -- it's part of the test */
 /*
 
 Copyright(c) 2014 - 2019 Denis Pushkarev
@@ -80,14 +80,12 @@ test('ManyKeysMap', t => {
 	);
 	let done = false;
 	try {
-		new ManyKeysMap(
-			createIterable([null, 1, 2], {
-				return() {
-					done = true;
-					return true;
-				},
-			}),
-		);
+		new ManyKeysMap(createIterable([null, 1, 2], {
+			return() {
+				done = true;
+				return true;
+			},
+		}));
 	} catch {
 		/* Empty */
 	}
@@ -382,8 +380,10 @@ test('ManyKeysMap Iterator', t => {
 	t.true(map.delete(['b']));
 	t.true(map.delete(['c']));
 	map.set(['e']);
-	results.push(iterator.next().value);
-	results.push(iterator.next().value); // eslint-disable-line unicorn/prefer-single-call
+	results.push(
+		iterator.next().value,
+		iterator.next().value,
+	);
 	t.true(iterator.next().done);
 	map.set(['f']);
 	t.true(iterator.next().done);
