@@ -378,8 +378,10 @@ test('ManyKeysMap Iterator', t => {
 	t.true(map.delete(['b']));
 	t.true(map.delete(['c']));
 	map.set(['e']);
-	results.push(iterator.next().value);
-	results.push(iterator.next().value);
+	results.push(
+		iterator.next().value,
+		iterator.next().value,
+	);
 	t.true(iterator.next().done);
 	map.set(['f']);
 	t.true(iterator.next().done);

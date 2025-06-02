@@ -3,14 +3,14 @@ const nullKey = Symbol('null'); // `objectHashes` key for null
 let keyCounter = 0;
 
 export default class ManyKeysMap extends Map {
-	constructor() {
+	constructor(...arguments_) {
 		super();
 
 		this._objectHashes = new WeakMap();
 		this._symbolHashes = new Map(); // https://github.com/tc39/ecma262/issues/1194
 		this._publicKeys = new Map();
 
-		const [pairs] = arguments; // Map compat
+		const [pairs] = arguments_; // Map compat
 		if (pairs === null || pairs === undefined) {
 			return;
 		}
