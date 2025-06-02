@@ -18,7 +18,6 @@
 	"author": "Federico Brigante <me@fregante.com> (https://fregante.com)",
 	"type": "module",
 	"exports": "./index.js",
-	"main": "./index.js",
 	"types": "./index.d.ts",
 	"files": [
 		"index.d.ts",
@@ -33,7 +32,10 @@
 		}
 	},
 	"devDependencies": {
-		"ava": "^4",
-		"xo": "^0.52"
+		"ava": "^6.3.0",
+		"xo": "^1.0.5"
+	},
+	"engines": {
+		"node": ">=18"
 	}
 }
