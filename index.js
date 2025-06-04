@@ -44,7 +44,7 @@ export default class ManyKeysMap extends Map {
 
 	_getPrivateKey(keys, create = false) {
 		const privateKeys = [];
-		for (let key of keys) {
+		for (const key of keys) {
 			const keyToPass = key === null ? nullKey : key;
 
 			let hashes;
@@ -54,7 +54,7 @@ export default class ManyKeysMap extends Map {
 				hashes = '_symbolHashes';
 			} else {
 				hashes = false;
-			} 
+			}
 
 			if (!hashes) {
 				privateKeys.push(keyToPass);

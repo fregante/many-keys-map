@@ -100,6 +100,7 @@ test('ManyKeysMap', t => {
 		done = true;
 		return Array.prototype[Symbol.iterator].call(this);
 	};
+	
 	new ManyKeysMap(array);
 	t.true(done);
 
