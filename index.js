@@ -44,20 +44,25 @@ export default class ManyKeysMap extends Map {
 
 	_getPrivateKey(keys, create = false) {
 		const privateKeys = [];
-		for (let key of keys) {
-			if (key === null) {
-				key = nullKey;
+		for (const key of keys) {
+			const keyToPass = key === null ? nullKey : key;
+
+			let hashes;
+			if (typeof keyToPass === 'object' || typeof keyToPass === 'function') {
+				hashes = '_objectHashes';
+			} else if (typeof keyToPass === 'symbol') {
+				hashes = '_symbolHashes';
+			} else {
+				hashes = false;
 			}
 
-			const hashes = typeof key === 'object' || typeof key === 'function' ? '_objectHashes' : (typeof key === 'symbol' ? '_symbolHashes' : false);
-
 			if (!hashes) {
-				privateKeys.push(key);
-			} else if (this[hashes].has(key)) {
-				privateKeys.push(this[hashes].get(key));
+				privateKeys.push(keyToPass);
+			} else if (this[hashes].has(keyToPass)) {
+				privateKeys.push(this[hashes].get(keyToPass));
 			} else if (create) {
 				const privateKey = `@@mkm-ref-${keyCounter++}@@`;
-				this[hashes].set(key, privateKey);
+				this[hashes].set(keyToPass, privateKey);
 				privateKeys.push(privateKey);
 			} else {
 				return false;
