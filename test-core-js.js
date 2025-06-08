@@ -91,8 +91,6 @@ test('ManyKeysMap', t => {
 	}
 
 	t.true(done, '.return #throw');
-
-	// Intentionally instantiating for side effects only
 	const array = [];
 	done = false;
 	array['@@iterator'] = undefined;
@@ -103,7 +101,6 @@ test('ManyKeysMap', t => {
 
 	new ManyKeysMap(array);
 	t.true(done);
-
 	const object = {};
 	new ManyKeysMap().set([object], 1);
 	const results = [];
