@@ -24,16 +24,17 @@
 		"index.js"
 	],
 	"scripts": {
-		"test": "xo && ava"
-	},
-	"xo": {
-		"rules": {
-			"no-new": 0
-		}
+		"test": "xo && jest"
 	},
 	"devDependencies": {
-		"ava": "^6.3.0",
-		"xo": "^1.0.5"
+		"@types/jest": "^30.0.0",
+		"@types/node": "^24.0.7",
+		"eslint-plugin-jest": "^29.0.1",
+		"jest": "^30.0.3",
+		"ts-jest": "^29.4.0",
+		"ts-node": "^10.9.2",
+		"typescript": "^5.8.3",
+		"xo": "^1.1.1"
 	},
 	"engines": {
 		"node": ">=18"

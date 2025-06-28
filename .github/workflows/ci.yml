@@ -31,5 +31,5 @@ jobs:
         run: npm ci || npm install
       - name: build
         run: npm run build --if-present
-      - name: AVA
-        run: npx ava
+      - name: Jest
+        run: npm test
