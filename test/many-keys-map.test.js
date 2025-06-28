@@ -2,7 +2,7 @@
 /* eslint-disable unicorn/no-array-for-each -- It's part of the test */
 import ManyKeysMap from '../index.js';
 
-describe('ManyKeysMap', () => {
+describe('ManyKeysMap (JavaScript)', () => {
 	test('Basics', () => {
 		const map = new ManyKeysMap();
 		expect(map instanceof Map).toBe(true);

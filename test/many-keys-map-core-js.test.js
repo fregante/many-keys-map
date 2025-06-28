@@ -58,7 +58,7 @@ function createIterable(elements, methods) {
 	return iterable;
 }
 
-describe('ManyKeysMap', () => {
+describe('ManyKeysMap (Javascript -- Core Implementation)', () => {
 	it('basic properties and methods', () => {
 		expect(typeof ManyKeysMap).toBe('function');
 		expect(ManyKeysMap.length).toBe(0);
