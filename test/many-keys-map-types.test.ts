@@ -1,21 +1,5 @@
 import ManyKeysMap from '../index.js';
 
-test('TypeScript: ManyKeysMap untyped usage', () => {
-	const map = new ManyKeysMap();
-	const element = { example: false };
-	const onClickFn = () => 0;
-	const onKeypressFn = () => 1;
-	map.set([element, 'click'], onClickFn);
-	map.set(
-		[element, 'keypress', JSON.stringify({ passive: true })],
-		onKeypressFn,
-	);
-	expect(map.has([element, 'click'])).toBe(true);
-	expect(map.has([element, 'keypress', JSON.stringify({ passive: true })])).toBe(true);
-	expect(map.get([element, 'click'])).toBe(onClickFn);
-	expect(map.get([element, 'keypress', JSON.stringify({ passive: true })])).toBe(onKeypressFn);
-});
-
 test('TypeScript: ManyKeysMap basic usage', () => {
 	const map = new ManyKeysMap<[string, number], string>();
 	map.set(['foo', 1], 'bar');
@@ -108,3 +92,31 @@ test('ManyKeysMap: usage example with various key types and iteration', () => {
 	expect(entries[1][0]).toEqual([42, null]);
 	expect(entries[1][1]).toBe(dateObject);
 });
+
+test('TypeScript: ManyKeysMap example from readme', () => {
+	const map = new ManyKeysMap<
+		[{example: boolean}, string] | [{example: boolean}, string, string],
+		() => number
+	>();
+	testExampleFromReadMe(map);
+});
+
+test('TypeScript: ManyKeysMap example from readme untyped', () => {
+	const map = new ManyKeysMap();
+	testExampleFromReadMe(map);
+});
+
+function testExampleFromReadMe(map: ManyKeysMap<unknown, unknown>): void {
+	const element = { example: false };
+	const onClickFn = () => 0;
+	const onKeypressFn = () => 1;
+	map.set([element, 'click'], onClickFn);
+	map.set(
+		[element, 'keypress', JSON.stringify({ passive: true })],
+		onKeypressFn,
+	);
+	expect(map.has([element, 'click'])).toBe(true);
+	expect(map.has([element, 'keypress', JSON.stringify({ passive: true })])).toBe(true);
+	expect(map.get([element, 'click'])).toBe(onClickFn);
+	expect(map.get([element, 'keypress', JSON.stringify({ passive: true })])).toBe(onKeypressFn);
+}

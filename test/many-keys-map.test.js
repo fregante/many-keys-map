@@ -310,6 +310,22 @@ describe('ManyKeysMap', () => {
 		expect(map.get([key1, key2, key3, Symbol(4)])).toBeUndefined();
 	});
 
+	test('Example from readme', () => {
+		const map = new ManyKeysMap();
+		const element = { example: false };
+		const onClickFn = () => 0;
+		const onKeypressFn = () => 1;
+		map.set([element, 'click'], onClickFn);
+		map.set(
+			[element, 'keypress', JSON.stringify({ passive: true })],
+			onKeypressFn,
+		);
+		expect(map.has([element, 'click'])).toBe(true);
+		expect(map.has([element, 'keypress', JSON.stringify({ passive: true })])).toBe(true);
+		expect(map.get([element, 'click'])).toBe(onClickFn);
+		expect(map.get([element, 'keypress', JSON.stringify({ passive: true })])).toBe(onKeypressFn);
+	});
+
 	test('Internal state consistency', () => {
 		const map = new ManyKeysMap();
 
