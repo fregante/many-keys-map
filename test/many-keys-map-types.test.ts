@@ -1,5 +1,21 @@
 import ManyKeysMap from '../index.js';
 
+test('TypeScript: ManyKeysMap untyped usage', () => {
+	const map = new ManyKeysMap();
+	const element = { example: false };
+	const onClickFn = () => 0;
+	const onKeypressFn = () => 1;
+	map.set([element, 'click'], onClickFn);
+	map.set(
+		[element, 'keypress', JSON.stringify({ passive: true })],
+		onKeypressFn,
+	);
+	expect(map.has([element, 'click'])).toBe(true);
+	expect(map.has([element, 'keypress', JSON.stringify({ passive: true })])).toBe(true);
+	expect(map.get([element, 'click'])).toBe(onClickFn);
+	expect(map.get([element, 'keypress', JSON.stringify({ passive: true })])).toBe(onKeypressFn);
+});
+
 test('TypeScript: ManyKeysMap basic usage', () => {
 	const map = new ManyKeysMap<[string, number], string>();
 	map.set(['foo', 1], 'bar');
@@ -64,4 +80,31 @@ test('ManyKeysMap: throws on non-array keys', () => {
 	expect(() => map.set('foo', 'bar')).toThrow(TypeError);
 	// @ts-expect-error testing bad getter call
 	expect(() => map.get('foo')).toThrow(TypeError);
+});
+
+test('ManyKeysMap: usage example with various key types and iteration', () => {
+	const header = { id: 'header' };
+	const target = { id: 'target' };
+	const groups = new ManyKeysMap();
+	groups.set([header, 'admin'], true);
+	groups.set([target, 'tools'], [1, 'any value is supported']);
+
+	const dateObject = new Date();
+	const data = new ManyKeysMap<any[], any>([
+		[['hello key'], 'value'],
+		[[42, null], dateObject],
+	]);
+
+	expect(data.get(['hello key'])).toBe('value');
+	expect(data.get([42, null])).toBe(dateObject);
+	expect(data.get(['42'])).toBeUndefined();
+	/* eslint-disable-next-line symbol-description */
+	expect(data.has([Symbol()])).toBe(false);
+
+	const entries = [...data];
+	expect(entries.length).toBe(2);
+	expect(entries[0][0]).toEqual(['hello key']);
+	expect(entries[0][1]).toBe('value');
+	expect(entries[1][0]).toEqual([42, null]);
+	expect(entries[1][1]).toBe(dateObject);
 });
