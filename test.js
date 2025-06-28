@@ -1,6 +1,6 @@
 /* eslint-env jest */
 /* eslint-disable unicorn/no-array-for-each -- It's part of the test */
-import ManyKeysMap from '../index.js';
+import ManyKeysMap from './index.js';
 
 describe('ManyKeysMap (JavaScript)', () => {
 	test('Basics', () => {

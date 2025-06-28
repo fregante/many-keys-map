@@ -1,4 +1,4 @@
-import ManyKeysMap from '../index.js';
+import ManyKeysMap from './index.js';
 
 describe('ManyKeysMap (TypeScript)', () => {
 	test('Basic usage', () => {

@@ -25,7 +25,7 @@ THE SOFTWARE.
 // Source
 // https://github.com/zloirock/core-js/blob/4d3549dc0490e2d581006de87350006852754d10/tests/tests/es.map.js
 
-import ManyKeysMap from '../index.js';
+import ManyKeysMap from './index.js';
 
 const isIterator = it =>
 	typeof it === 'object' && typeof it.next === 'function';

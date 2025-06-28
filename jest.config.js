@@ -11,6 +11,7 @@ const config = {
 		],
 	},
 	moduleNameMapper: {},
+	testMatch: ['**/test-core-js.js', '**/?(*.)+(test).[jt]s?(x)'],
 };
 
 export default config;
