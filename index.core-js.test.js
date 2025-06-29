@@ -24,8 +24,18 @@ THE SOFTWARE.
 // Source
 // https://github.com/zloirock/core-js/blob/4d3549dc0490e2d581006de87350006852754d10/tests/tests/es.map.js
 
-import test from 'ava';
+import {test, assert} from 'vitest';
 import ManyKeysMap from './index.js';
+
+// AVA adapter
+const t = {
+	is: assert.equal,
+	deepEqual: assert.deepEqual,
+	true: assert.isTrue,
+	false: assert.isFalse,
+	throws: assert.throws,
+	truthy: assert.ok,
+};
 
 const isIterator = it => typeof it === 'object' && typeof it.next === 'function';
 
@@ -57,7 +67,7 @@ function createIterable(elements, methods) {
 	return iterable;
 }
 
-test('ManyKeysMap', t => {
+test('ManyKeysMap', () => {
 	t.is(typeof ManyKeysMap, 'function');
 	t.is(ManyKeysMap.length, 0);
 	t.is(ManyKeysMap.name, 'ManyKeysMap');
@@ -134,7 +144,7 @@ test('ManyKeysMap', t => {
 	);
 });
 
-test('ManyKeysMap#clear', t => {
+test('ManyKeysMap#clear', () => {
 	t.is(typeof ManyKeysMap.prototype.clear, 'function');
 	t.is(ManyKeysMap.prototype.clear.length, 0);
 	t.is(ManyKeysMap.prototype.clear.name, 'clear');
@@ -160,7 +170,7 @@ test('ManyKeysMap#clear', t => {
 	t.true(!map.has(frozen));
 });
 
-test('ManyKeysMap#delete', t => {
+test('ManyKeysMap#delete', () => {
 	t.is(typeof ManyKeysMap.prototype.delete, 'function');
 	t.is(ManyKeysMap.prototype.delete.length, 1);
 	t.is(ManyKeysMap.prototype.delete.name, 'delete');
@@ -190,7 +200,7 @@ test('ManyKeysMap#delete', t => {
 	t.is(map.size, 3);
 });
 
-test('ManyKeysMap#forEach', t => {
+test('ManyKeysMap#forEach', () => {
 	t.is(typeof ManyKeysMap.prototype.forEach, 'function');
 	t.is(ManyKeysMap.prototype.forEach.length, 1);
 	t.is(ManyKeysMap.prototype.forEach.name, 'forEach');
@@ -248,10 +258,10 @@ test('ManyKeysMap#forEach', t => {
 		ManyKeysMap.prototype.forEach.call(new Set(), () => {
 			/* Empty */
 		});
-	}, {message: 'Method Map.prototype.forEach called on incompatible receiver #<Set>'});
+	}, TypeError, 'Method Map.prototype.forEach called on incompatible receiver #<Set>');
 });
 
-test('ManyKeysMap#get', t => {
+test('ManyKeysMap#get', () => {
 	t.is(typeof ManyKeysMap.prototype.get, 'function');
 	t.is(ManyKeysMap.prototype.get.name, 'get');
 	t.is(ManyKeysMap.prototype.get.length, 1);
@@ -274,7 +284,7 @@ test('ManyKeysMap#get', t => {
 	t.is(map.get([2]), 5);
 });
 
-test('ManyKeysMap#has', t => {
+test('ManyKeysMap#has', () => {
 	t.is(typeof ManyKeysMap.prototype.has, 'function');
 	t.is(ManyKeysMap.prototype.has.name, 'has');
 	t.is(ManyKeysMap.prototype.has.length, 1);
@@ -297,7 +307,7 @@ test('ManyKeysMap#has', t => {
 	t.true(!map.has([{}]));
 });
 
-test('ManyKeysMap#set', t => {
+test('ManyKeysMap#set', () => {
 	t.is(typeof ManyKeysMap.prototype.set, 'function');
 	t.is(ManyKeysMap.prototype.set.name, 'set');
 	t.is(ManyKeysMap.prototype.set.length, 2);
@@ -336,7 +346,7 @@ test('ManyKeysMap#set', t => {
 	t.is(map.get([frozen]), 42);
 });
 
-test('ManyKeysMap#size', t => {
+test('ManyKeysMap#size', () => {
 	t.false(Object.prototype.propertyIsEnumerable.call(ManyKeysMap.prototype, 'size'));
 	const map = new ManyKeysMap();
 	map.set([2], 1);
@@ -346,10 +356,10 @@ test('ManyKeysMap#size', t => {
 	const sizeDescriptor = Object.getOwnPropertyDescriptor(ManyKeysMap.prototype, 'size');
 	t.truthy(sizeDescriptor && sizeDescriptor.get, 'size is getter');
 	t.truthy(sizeDescriptor && !sizeDescriptor.set, 'size isnt setter');
-	t.throws(() => ManyKeysMap.prototype.size, {instanceOf: TypeError});
+	t.throws(() => ManyKeysMap.prototype.size, TypeError);
 });
 
-test('ManyKeysMap#@@toStringTag', t => {
+test('ManyKeysMap#@@toStringTag', () => {
 	t.is(
 		ManyKeysMap.prototype[Symbol.toStringTag],
 		'ManyKeysMap',
@@ -362,7 +372,7 @@ test('ManyKeysMap#@@toStringTag', t => {
 	);
 });
 
-test('ManyKeysMap Iterator', t => {
+test('ManyKeysMap Iterator', () => {
 	const map = new ManyKeysMap();
 	map.set(['a'], 1);
 	map.set(['b'], 2);
@@ -388,7 +398,7 @@ test('ManyKeysMap Iterator', t => {
 	t.deepEqual(results, [['a'], ['d'], ['e']]);
 });
 
-test('ManyKeysMap#keys', t => {
+test('ManyKeysMap#keys', () => {
 	t.is(typeof ManyKeysMap.prototype.keys, 'function');
 	t.is(ManyKeysMap.prototype.keys.name, 'keys');
 	t.is(ManyKeysMap.prototype.keys.length, 0);
@@ -418,7 +428,7 @@ test('ManyKeysMap#keys', t => {
 	});
 });
 
-test('ManyKeysMap#values', t => {
+test('ManyKeysMap#values', () => {
 	t.is(typeof ManyKeysMap.prototype.values, 'function');
 	t.is(ManyKeysMap.prototype.values.name, 'values');
 	t.is(ManyKeysMap.prototype.values.length, 0);
@@ -448,7 +458,7 @@ test('ManyKeysMap#values', t => {
 	});
 });
 
-test('ManyKeysMap#entries', t => {
+test('ManyKeysMap#entries', () => {
 	t.is(typeof ManyKeysMap.prototype.entries, 'function');
 	t.is(ManyKeysMap.prototype.entries.name, 'entries');
 	t.is(ManyKeysMap.prototype.entries.length, 0);
@@ -478,7 +488,7 @@ test('ManyKeysMap#entries', t => {
 	});
 });
 
-test('ManyKeysMap#@@iterator', t => {
+test('ManyKeysMap#@@iterator', () => {
 	t.is(ManyKeysMap.prototype.entries.name, 'entries');
 	t.is(ManyKeysMap.prototype.entries.length, 0);
 	t.is(ManyKeysMap.prototype[Symbol.iterator], ManyKeysMap.prototype.entries);

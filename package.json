@@ -24,7 +24,7 @@
 		"index.js"
 	],
 	"scripts": {
-		"test": "xo && ava"
+		"test": "xo && vitest"
 	},
 	"xo": {
 		"rules": {
@@ -32,7 +32,7 @@
 		}
 	},
 	"devDependencies": {
-		"ava": "^6.3.0",
+		"vitest": "^3.2.4",
 		"xo": "^1.0.5"
 	},
 	"engines": {
