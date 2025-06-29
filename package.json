@@ -24,7 +24,7 @@
 		"index.js"
 	],
 	"scripts": {
-		"test": "tsc && xo && vitest"
+		"test": "tsc && xo && vitest --typecheck"
 	},
 	"xo": {
 		"rules": {
