@@ -4,6 +4,7 @@ import ManyKeysMap from './index.js';
 it('should be a class that extends Map', () => {
 	// Use toBeConstructibleWith() for checking if a class is constructible
 	expectTypeOf(ManyKeysMap).toBeConstructibleWith();
+	// eslint-disable-next-line @typescript-eslint/no-deprecated
 	expectTypeOf(ManyKeysMap.prototype).toMatchTypeOf(Map.prototype);
 });
 
