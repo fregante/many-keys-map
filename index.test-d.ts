@@ -45,3 +45,32 @@ it('should handle different key and value types', () => {
   expectTypeOf(map.set([true, 123, 'hello'], {status: 'active'})).toEqualTypeOf<typeof map>();
   expectTypeOf(map.get([false, 456, 'world'])).toEqualTypeOf<DiverseValue | undefined>();
 });
+
+it('should not accept non-array keys', () => {
+	// @ts-expect-error - string key should not be allowed
+	expectTypeOf<ManyKeysMap<string, any>>().not.toBeAny();
+
+	// @ts-expect-error - number key should not be allowed
+	expectTypeOf<ManyKeysMap<number, any>>().not.toBeAny();
+
+	// @ts-expect-error - object key should not be allowed
+	expectTypeOf<ManyKeysMap<Record<string, unknown>, any>>().not.toBeAny();
+});
+
+it('should not accept undefined or null keys', () => {
+	// @ts-expect-error - undefined key should not be allowed
+	expectTypeOf<ManyKeysMap<undefined, any>>().not.toBeAny();
+
+	// @ts-expect-error - null key should not be allowed
+	expectTypeOf<ManyKeysMap<undefined, any>>().not.toBeAny();
+});
+
+it('should not accept function keys', () => {
+	// @ts-expect-error - function key should not be allowed
+	expectTypeOf<ManyKeysMap<() => void, any>>().not.toBeAny();
+});
+
+it('should not accept symbol keys', () => {
+	// @ts-expect-error - symbol key should not be allowed
+	expectTypeOf<ManyKeysMap<symbol, any>>().not.toBeAny();
+});
