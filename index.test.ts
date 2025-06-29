@@ -1,9 +1,16 @@
-/* eslint-disable unicorn/no-array-for-each, no-warning-comments -- It's part of the test */
+/* eslint-disable unicorn/no-array-for-each, no-warning-comments, @typescript-eslint/no-empty-function -- It's part of the test */
 import {test, assert} from 'vitest';
 import ManyKeysMap from './index.js';
 
 // AVA adapter
-const t = {
+const t: {
+	// TS complains https://stackoverflow.com/a/72689922/288906
+	is: typeof assert.equal;
+	deepEqual: typeof assert.deepEqual;
+	true: typeof assert.isTrue;
+	false: typeof assert.isFalse;
+	throws: typeof assert.throws;
+} = {
 	is: assert.equal,
 	deepEqual: assert.deepEqual,
 	true: assert.isTrue,
@@ -23,7 +30,7 @@ test('Basics', () => {
 	t.deepEqual([...map.entries()], []);
 	t.deepEqual([...map.values()], []);
 	t.deepEqual([...map.keys()], []);
-	map.forEach(_ => t.fail());
+	map.forEach(_ => assert.fail());
 });
 
 test('Set', () => {
@@ -42,7 +49,7 @@ test('Set', () => {
 	t.is(map._publicKeys.size, 3);
 
 	// Also make sure that the same map is returned
-	t.is(map.set(['#', 'fifth']), map);
+	t.is(map.set(['#', 'fifth'], 5), map);
 
 	const prefilledMap = new ManyKeysMap([
 		[['-'], 'first'],
@@ -152,11 +159,13 @@ test('Clear', () => {
 	t.is(map._publicKeys.size, 4);
 	t.is(map._symbolHashes.size, 2); // Symbol(1) and null
 
+	// eslint-disable-next-line @typescript-eslint/no-confusing-void-expression -- That's the test
 	t.is(map.clear(), undefined);
 	t.is(map.size, 0);
 	t.is(map._publicKeys.size, 0);
 	t.is(map._symbolHashes.size, 0);
 
+	// eslint-disable-next-line @typescript-eslint/no-confusing-void-expression -- That's the test
 	t.is(map.clear(), undefined);
 	t.is(map.size, 0);
 	t.is(map._publicKeys.size, 0);
@@ -168,7 +177,7 @@ test('Iterators', () => {
 		[['-'], 'first'],
 		[[':', '-'], 'second'],
 		[[':', '-', '%'], 'third'],
-	];
+	] as Array<[unknown[], string]>;
 	const map = new ManyKeysMap(pairs);
 	const regularMap = new Map(pairs);
 

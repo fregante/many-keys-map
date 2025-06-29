@@ -24,7 +24,7 @@
 		"index.js"
 	],
 	"scripts": {
-		"test": "xo && vitest"
+		"test": "tsc && xo && vitest"
 	},
 	"xo": {
 		"rules": {
@@ -32,6 +32,8 @@
 		}
 	},
 	"devDependencies": {
+		"@sindresorhus/tsconfig": "^7.0.0",
+		"typescript": "^5.8.3",
 		"vitest": "^3.2.4",
 		"xo": "^1.0.5"
 	},
