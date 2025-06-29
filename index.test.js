@@ -1,8 +1,17 @@
 /* eslint-disable unicorn/no-array-for-each, no-warning-comments -- It's part of the test */
-import test from 'ava';
+import {test, assert} from 'vitest';
 import ManyKeysMap from './index.js';
 
-test('Basics', t => {
+// AVA adapter
+const t = {
+	is: assert.equal,
+	deepEqual: assert.deepEqual,
+	true: assert.isTrue,
+	false: assert.isFalse,
+	throws: assert.throws,
+};
+
+test('Basics', () => {
 	const map = new ManyKeysMap();
 	t.true(map instanceof Map);
 	t.is(typeof map[Symbol.iterator], 'function');
@@ -17,7 +26,7 @@ test('Basics', t => {
 	map.forEach(_ => t.fail());
 });
 
-test('Set', t => {
+test('Set', () => {
 	const map = new ManyKeysMap();
 	map.set(['-'], 'first');
 	t.is(map.size, 1);
@@ -42,7 +51,7 @@ test('Set', t => {
 	t.is(prefilledMap.size, 2);
 });
 
-test('Get', t => {
+test('Get', () => {
 	const map = new ManyKeysMap([
 		[['-'], 'first'],
 		[[':', '-'], 'second'],
@@ -57,7 +66,7 @@ test('Get', t => {
 	t.is(map.get([':', '%', '-']), undefined);
 });
 
-test('Has', t => {
+test('Has', () => {
 	const map = new ManyKeysMap([
 		[['-'], 'first'],
 		[[':', '-'], 'second'],
@@ -72,7 +81,7 @@ test('Has', t => {
 	t.false(map.has([':', '%', '-']));
 });
 
-test('Delete', t => {
+test('Delete', () => {
 	const object = {};
 	const symbol = Symbol('symbol');
 
@@ -131,7 +140,7 @@ test('Delete', t => {
 	t.is(map._symbolHashes.size, 1); // Known leak, because of https://github.com/tc39/ecma262/issues/1194
 });
 
-test('Clear', t => {
+test('Clear', () => {
 	const map = new ManyKeysMap([
 		[['-'], 'first'],
 		[[':', '-'], 'second'],
@@ -154,7 +163,7 @@ test('Clear', t => {
 	t.is(map._symbolHashes.size, 0);
 });
 
-test('Iterators', t => {
+test('Iterators', () => {
 	const pairs = [
 		[['-'], 'first'],
 		[[':', '-'], 'second'],
@@ -178,7 +187,7 @@ test('Iterators', t => {
 	t.is(count, pairs.length);
 });
 
-test('All types of keys', t => {
+test('All types of keys', () => {
 	const map = new ManyKeysMap();
 
 	t.is(map.set([], '').get([]), '');
@@ -270,7 +279,7 @@ test('All types of keys', t => {
 	t.is(map._publicKeys.size, 0);
 });
 
-test('Mixed types of keys', t => {
+test('Mixed types of keys', () => {
 	const map = new ManyKeysMap();
 	map.set([1, '1', true], 'truthy');
 	t.is(map.size, 1);
@@ -307,7 +316,7 @@ test('Mixed types of keys', t => {
 	t.is(map.get([key1, key2, key3, Symbol(4)]), undefined);
 });
 
-test('Internal state consistency', t => {
+test('Internal state consistency', () => {
 	const map = new ManyKeysMap();
 
 	const keys = [1, 2];
